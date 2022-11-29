@@ -18,10 +18,10 @@ type ExportToStream<'Name, 'Src, 'Dst> when 'Src :> Stream and 'Dst :> Stream =
 
 let tryStreamCopy: StreamCopy<'Src, 'Dst> -> 'Dst -> 'Src -> IgnorableResult<int64, string> =
     fun streamCopy (destination: 'Dst) source ->
-        FsCombinators.ResultExtensions.tryAsResult
-        <| fun () ->
+        fun () ->
             streamCopy source destination
             destination.Length
+        |> FsCombinators.ResultExtensions.tryAsResult
         |> IgnorableResult.ofResult
 
 let writeContentToStream: ExportToStream<'Name, 'Src, 'Dst> =
@@ -31,12 +31,8 @@ let writeContentToStream: ExportToStream<'Name, 'Src, 'Dst> =
             use fStream = stream
             tryStreamCopy streamCopy fStream source)
 
-let fsWriteToFile streamCopy =
-    writeContentToStream tryCreateFileWithoutOverwrite streamCopy
+let fsWriteToFile () =
+    writeContentToStream tryCreateFileWithoutOverwrite
 
-let fsOverwriteFile streamCopy =
-    streamCopy
-    |> writeContentToStream (
-        tryCreateFileWithOverwrite
-        >> IgnorableResult.ofResult
-    )
+let fsOverwriteFile () =
+    writeContentToStream tryCreateFileWithOverwrite

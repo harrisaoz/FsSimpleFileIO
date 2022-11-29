@@ -33,6 +33,7 @@ let tryCreateFileWithoutOverwrite absoluteFilename =
     | ex -> IgnorableResult.Error <| ex.Message
 
 let tryCreateFileWithOverwrite absoluteFilename =
-    FsCombinators.ResultExtensions.tryAsResult
-    <| fun () ->
+    fun () ->
         File.Open(absoluteFilename, FileMode.Create)
+    |> FsCombinators.ResultExtensions.tryAsResult
+    |> IgnorableResult.ofResult
