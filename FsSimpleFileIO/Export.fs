@@ -6,9 +6,11 @@ open FsCombinators.ExtraTypes
 
 open FileSystemExtensions
 
-type CreateStream<'StreamName, 'Stream> when 'Stream :> Stream = 'StreamName -> IgnorableResult<'Stream, string>
+type CreateStream<'StreamName, 'Stream> when 'Stream :> Stream =
+    'StreamName -> IgnorableResult<'Stream, string>
 
-type StreamCopy<'Src, 'Dst> when 'Src :> Stream and 'Dst :> Stream = 'Src -> 'Dst -> unit
+type StreamCopy<'Src, 'Dst> when 'Src :> Stream and 'Dst :> Stream =
+    'Src -> 'Dst -> unit
 
 type WriteToStream<'Name, 'Src, 'Dst> when 'Src :> Stream and 'Dst :> Stream =
     StreamCopy<'Src, 'Dst> -> 'Name -> 'Src -> IgnorableResult<int64, string>
@@ -16,7 +18,10 @@ type WriteToStream<'Name, 'Src, 'Dst> when 'Src :> Stream and 'Dst :> Stream =
 type ExportToStream<'Name, 'Src, 'Dst> when 'Src :> Stream and 'Dst :> Stream =
     CreateStream<'Name, 'Dst> -> WriteToStream<'Name, 'Src, 'Dst>
 
-let tryStreamCopy: StreamCopy<'Src, 'Dst> -> 'Dst -> 'Src -> IgnorableResult<int64, string> =
+let tryStreamCopy: StreamCopy<'Src, 'Dst>
+    -> 'Dst
+    -> 'Src
+    -> IgnorableResult<int64, string> =
     fun streamCopy (destination: 'Dst) source ->
         fun () ->
             streamCopy source destination
