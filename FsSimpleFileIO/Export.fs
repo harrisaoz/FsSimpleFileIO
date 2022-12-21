@@ -30,14 +30,14 @@ let tryStreamCopy: StreamCopy<'Src, 'Dst>
         |> IgnorableResult.ofResult
 
 let writeContentToStream: ExportToStream<'Name, 'Src, 'Dst> =
-    fun createStream streamCopy destStreamName source ->
+    fun createStream streamCopy destStreamName sourceStream ->
         createStream destStreamName
         |> IgnorableResult.bind (fun stream ->
             use fStream = stream
-            tryStreamCopy streamCopy fStream source)
 
 let fsWriteToFile () =
     writeContentToStream tryCreateFileWithoutOverwrite
+            tryStreamCopy streamCopy fStream sourceStream)
 
 let fsOverwriteFile () =
     writeContentToStream tryCreateFileWithOverwrite
