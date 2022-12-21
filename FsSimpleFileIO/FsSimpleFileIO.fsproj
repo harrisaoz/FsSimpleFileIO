@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <PackageId>FsSimpleFileIO</PackageId>
-        <Version>0.1.0</Version>
+        <Version>0.2.0</Version>
         <Authors>Anthony Harris</Authors>
         <RepositoryUrl>https://github.com/harrisaoz/FsSimpleFileIO</RepositoryUrl>
         <TargetFramework>net6.0</TargetFramework>
