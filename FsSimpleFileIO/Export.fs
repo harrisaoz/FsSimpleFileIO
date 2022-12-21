@@ -6,8 +6,8 @@ open FsCombinators.ExtraTypes
 
 open FileSystemExtensions
 
-type CreateStream<'StreamName, 'Stream> when 'Stream :> Stream =
-    'StreamName -> IgnorableResult<'Stream, string>
+type CreateStream<'StreamName, 'NewStream> when 'NewStream :> Stream =
+    'StreamName -> IgnorableResult<'NewStream, string>
 
 type StreamCopy<'Src, 'Dst> when 'Src :> Stream and 'Dst :> Stream =
     'Src -> 'Dst -> unit
