@@ -12,7 +12,10 @@
     <ItemGroup>
         <Compile Include="FileSystemExtensions.fs"/>
         <Compile Include="Sanitation.fs"/>
+        <Compile Include="Text.fs"/>
+        <Compile Include="Streams.fs"/>
         <Compile Include="Export.fs"/>
+        <Compile Include="Facade.fs"/>
     </ItemGroup>
 
     <ItemGroup>

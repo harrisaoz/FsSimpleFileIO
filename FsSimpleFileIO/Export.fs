@@ -4,8 +4,6 @@ open System.IO
 
 open FsCombinators.ExtraTypes
 
-open FileSystemExtensions
-
 type CreateStream<'StreamName, 'NewStream> when 'NewStream :> Stream =
     'StreamName -> IgnorableResult<'NewStream, string>
 
@@ -34,13 +32,8 @@ let writeContentToStream: ExportToStream<'Name, 'Src, 'Dst> =
         createStream destStreamName
         |> IgnorableResult.bind (fun stream ->
             use fStream = stream
-
-let fsWriteToFile () =
-    writeContentToStream tryCreateFileWithoutOverwrite
             tryStreamCopy streamCopy fStream sourceStream)
 
-let fsOverwriteFile () =
-    writeContentToStream tryCreateFileWithOverwrite
 module StandardDependencies =
     let copyStream (inStream: #Stream) (outStream: #Stream) =
         inStream.CopyTo(outStream)
