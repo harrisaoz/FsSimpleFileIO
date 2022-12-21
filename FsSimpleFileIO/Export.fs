@@ -41,3 +41,6 @@ let fsWriteToFile () =
 
 let fsOverwriteFile () =
     writeContentToStream tryCreateFileWithOverwrite
+module StandardDependencies =
+    let copyStream (inStream: #Stream) (outStream: #Stream) =
+        inStream.CopyTo(outStream)
