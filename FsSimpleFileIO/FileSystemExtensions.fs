@@ -19,6 +19,12 @@ let absoluteName: DirectoryInfo -> string -> string =
     fun dir localName ->
         $"{dir.FullName}{Path.DirectorySeparatorChar}{localName}"
 
+/// Try to create a file with the given absolute name and open a handle to the
+/// new file.
+/// Return:
+/// - Ok fileHandle: the file was created successfully (a new file);
+/// - Ignore: the file already exists;
+/// - Error msg: any other failure occurred while trying to create the file.
 let tryCreateFileWithoutOverwrite absoluteFilename =
     try
         IgnorableResult.Ok <| File.Open(absoluteFilename, FileMode.CreateNew)
@@ -30,6 +36,12 @@ let tryCreateFileWithoutOverwrite absoluteFilename =
         IgnorableResult.Ignore
     | ex -> IgnorableResult.Error <| ex.Message
 
+/// Try to create a file with the given absolute name and open a handle to the
+/// (possibly new) file.
+/// Return:
+/// - Ok fileHandle: the file was created successfully (a new file) or a file
+/// with the specified name already exists (and Open returned the file handle);
+/// - Error msg: any other failure occurred while trying to create the file.
 let tryCreateFileWithOverwrite absoluteFilename =
     fun () -> File.Open(absoluteFilename, FileMode.Create)
     |> FsCombinators.ResultExtensions.tryAsResult
