@@ -3,7 +3,7 @@
 open System.IO
 open FsCombinators.ExtraTypes
 
-let asDirName (labels: string []) =
+let asDirName (labels: string[]) =
     String.concat (string Path.DirectorySeparatorChar) labels
 
 let assertFolder name =
@@ -13,17 +13,15 @@ let assertFolder name =
 
 let assertSubfolder: DirectoryInfo -> string -> DirectoryInfo =
     fun parent child ->
-        [| parent.FullName; child |]
-        |> asDirName
-        |> assertFolder
+        [| parent.FullName; child |] |> asDirName |> assertFolder
 
 let absoluteName: DirectoryInfo -> string -> string =
-    fun dir localName -> $"{dir.FullName}{Path.DirectorySeparatorChar}{localName}"
+    fun dir localName ->
+        $"{dir.FullName}{Path.DirectorySeparatorChar}{localName}"
 
 let tryCreateFileWithoutOverwrite absoluteFilename =
     try
-        IgnorableResult.Ok
-        <| File.Open(absoluteFilename, FileMode.CreateNew)
+        IgnorableResult.Ok <| File.Open(absoluteFilename, FileMode.CreateNew)
     with
     | :? System.OutOfMemoryException -> reraise ()
     | :? IOException ->
@@ -33,7 +31,6 @@ let tryCreateFileWithoutOverwrite absoluteFilename =
     | ex -> IgnorableResult.Error <| ex.Message
 
 let tryCreateFileWithOverwrite absoluteFilename =
-    fun () ->
-        File.Open(absoluteFilename, FileMode.Create)
+    fun () -> File.Open(absoluteFilename, FileMode.Create)
     |> FsCombinators.ResultExtensions.tryAsResult
     |> IgnorableResult.ofResult
